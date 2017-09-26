@@ -12,8 +12,13 @@ PRODUCER_URL="ec2-52-37-110-1.us-west-2.compute.amazonaws.com"
 
 for ((i=$1; i<=$2; i++))
 do
-    echo "$PROM_URL" "$PRODUCER_URL" "$i" "$3$i"
-    #./producer "$PROM_URL" "$PRODUCER_URL" "$i" "$SENSOR_PREFIX$i" & 
+    #echo "$PROM_URL" "$PRODUCER_URL" "$i" "$3$i"
+    if (($i % 100 == 0))
+    then
+        echo "$i sleep for 5 seconds"
+        sleep 5
+    fi
+    ./producer "$PROM_URL" "$PRODUCER_URL" "$i" "$3$i" &
 done
 
 # count the number of targets

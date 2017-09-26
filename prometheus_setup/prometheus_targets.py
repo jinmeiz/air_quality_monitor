@@ -7,9 +7,17 @@ import os
 """
 Very simple HTTP server in python.
 Usage::
+    specify prom_public_dns and prom_port_num
     ./prometheus_targets.py [<port>]
 """
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+
+# specify prometheus server public dns
+prom_public_dns = "<prometheus server public dns>"
+# specify prometheus server port number
+prom_port_num = 9090
+# specify file name for storing targets
+input_file = "targets.json"
 
 def append_data_json(file_name, producer_address, port, sensor_id):
     # open file
@@ -55,23 +63,21 @@ class S(BaseHTTPRequestHandler):
         # get the post data
         conten_len = int(self.headers.getheader('content-length',0))
         post_body = self.rfile.read(conten_len)
-        print("post_body", post_body)
         
         # parse the post data, obtain producer_address and port number
         post_body_info = re.split(r'&+|=', post_body)
         producer_address = post_body_info[1]
         port_number = post_body_info[3]
         sensor_id = post_body_info[5]
-        print("producer_address", producer_address)
+        #print("producer_address", producer_address)
         print("port_number", port_number)
-        print("sensor_id", sensor_id)
+        #print("sensor_id", sensor_id)
 
         # write targets into json file
-        input_file = "targets.json"
         if not os.path.exists(input_file):
-            add_prometheus_json("targets.json", "localhost", 9090)
+            add_prometheus_json(input_file, prom_public_dns, prom_port_num)
 
-        append_data_json("targets.json", producer_address, port_number, sensor_id)
+        append_data_json(input_file, producer_address, port_number, sensor_id)
 
 
 
