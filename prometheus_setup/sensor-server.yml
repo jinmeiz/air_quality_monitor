@@ -1,7 +1,7 @@
 global:
-  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  scrape_interval:     15s # by default, scrape targets every 15 seconds.
 
-  # Attach these labels to any time series or alerts when communicating with
+  # attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
     monitor: 'sensor-monitor'
@@ -9,8 +9,9 @@ global:
 scrape_configs:
   - job_name:       'sensor-server'
 
-    # Override the global default and scrape targets from this job every 5 seconds.
+    # override the global default and scrape targets from this job every 10 seconds.
     scrape_interval: 10s
 
+    # specify the json files that contain scraping targets
     file_sd_configs:
       - files:["prometheus_server.json", "targets.json"]

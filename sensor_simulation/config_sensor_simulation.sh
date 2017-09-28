@@ -1,23 +1,25 @@
 #!/bin/bash
 
+# this script is to congfig sensor_simulation code
+
 # instructions:
-# move script to build directory
+# move this script to the build directory of sensor_simulation
 
 # set source directory, change if needed
 SOURCE_DIR=/home/ubuntu/softwares/source/air_quality_monitor/sensor_simulation/src
 
 # set prometheus-cpp client directory (install directory), change if needed
 PROMETHEUS_CPP_DIR=/home/ubuntu/softwares/install/prometheus-cpp
-# on ubuntu
+# example on ubuntu
 PROMETHEUS_CPP_LIB=${PROMETHEUS_CPP_DIR}/usr/local/lib/x86_64-linux-gnu/libprometheus-cpp.a
-# on mac os
+# example on mac os
 # PROMETHEUS_CPP_LIB=${PROMETHEUS_CPP_DIR}/usr/local/lib/libprometheus-cpp.a
 
 # set protobuf directory
 PROTOBUF_DIR=/usr
-# on ubuntu
+# example on ubuntu
 PROTOBUF_LIBRARIES=${PROTOBUF_DIR}/lib/libprotobuf.so
-# on mac os
+# example on mac os
 #PROTOBUF_LIBRARIES = ${PROTOBUF_DIR}/lib/libprotobuf.dylib 
 
 cmake ${SOURCE_DIR} \

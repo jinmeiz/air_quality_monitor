@@ -1,18 +1,30 @@
 #!/bin/bash
 
+# this script generate targets information
+# and send it to a intermediate server that
+# generate target json file for prometheus server
+
 # instructions:
-# move script to build directory
-# run: ./generate_ports.sh PORT_NUM_START PORT_NUM_END SENSOR_PREFIX
+# move this script to the build directory of sensor_simulation
+# run: ./generate_ports.sh [PORT_NUM_START] [PORT_NUM_END] [SENSOR_PREFIX]
 # terminate all jobs: killall producer
 
-# Prometheus server public dns
-PROM_URL="ec2-34-213-172-41.us-west-2.compute.amazonaws.com:8080"
-# producer public dns
-PRODUCER_URL="ec2-52-37-110-1.us-west-2.compute.amazonaws.com"
+# Prometheus server url or public dns on aws
+# example on aws
+PROM_URL="<public dns>:8080"
+# example on mac os
+#PROM_URL="localhost:8080"
+# producer url or public dns
+# example on aws
+PRODUCER_URL="<public dns>"
+# example on mac os
+#PRODUCER_URL="localhost"
 
 for ((i=$1; i<=$2; i++))
 do
     #echo "$PROM_URL" "$PRODUCER_URL" "$i" "$3$i"
+
+# sleep periodically to avoid overwhelm the network 
     if (($i % 100 == 0))
     then
         echo "$i sleep for 5 seconds"
