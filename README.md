@@ -1,6 +1,6 @@
 # AirQ - monitoring air quality in real time.
 
-Air pollution can be serious issue in some areas or critical time periods. The goal of my project is to build a platform to connect air quality sensors, collect data, and monitor the air quality in real time. The techonoly I chose to explore is [Prometheus]("https://prometheus.io"), which is a monitor system and time series database. 
+Air pollution can be serious issue in some areas or critical time periods. The goal of my project is to build a platform to connect air quality sensors, collect data, and monitor the air quality in real time. The techonoly I chose to explore is [Prometheus](https://prometheus.io), which is a monitor system and time series database. 
 
 ## Design
 
@@ -36,11 +36,11 @@ For example, `avg(metric_name) by (key_1)`
 
 ## Dependence
 This program requires:
-* [Prometheus]("https://prometheus.io") - a monitor system and time series database
+* [Prometheus](https://prometheus.io) - a monitor system and time series database
 * A C++ comiplier that supports the C++11 standard. This application has been tested with Apple Clang version 8.1.0, and GCC versions 6.3.0.
-* [prometheus-cpp]("https://github.com/jupp0r/prometheus-cpp") - Prometheus client library in C++. The installation instruction is included in the `README` file under the _sensor_simulation_ directory.
-* [Protocol Buffers]("https://github.com/google/protobuf") - Google's data interchange format. It is needed to compile prometheus-cpp. See the `README` file in _sensor_simulation_ directory for compilation and installation.
-* [Grafana]("https://grafana.com") - a platform for analytics and monitoring.
+* [prometheus-cpp](https://github.com/jupp0r/prometheus-cpp) - Prometheus client library in C++. The installation instruction is included in the `README` file under the _sensor_simulation_ directory.
+* [Protocol Buffers](https://github.com/google/protobuf) - Google's data interchange format. It is needed to compile prometheus-cpp. See the `README` file in _sensor_simulation_ directory for compilation and installation.
+* [Grafana](https://grafana.com) - a platform for analytics and monitoring.
 
 ## Build
 
@@ -106,14 +106,14 @@ In _/prometheus/run_prom.sh_, change `config.file` parameter to `prometheus-serv
 
 ## License
 
-### [Prometheus]("https://github.com/prometheus/prometheus") 
+### [Prometheus](https://github.com/prometheus/prometheus) 
 Apache License 2.0
 
-### [prometheus-cpp]("https://github.com/jupp0r/prometheus-cpp")
+### [prometheus-cpp](https://github.com/jupp0r/prometheus-cpp)
 MIT
 
 ### protobuf
-[LICENSE]("https://github.com/google/protobuf/blob/master/LICENSE")
+[LICENSE](https://github.com/google/protobuf/blob/master/LICENSE)
 
 ### [Grafana](https://github.com/grafana/grafana)
 Apache License 2.0
