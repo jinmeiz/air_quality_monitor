@@ -4,7 +4,7 @@
 ## Design
 
 <p align="center">
-<img src="./images/system.png" width="400">
+<img src="./images/system.png" width="800">
 </p>
 
 ## Dependence
