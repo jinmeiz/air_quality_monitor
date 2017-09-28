@@ -4,11 +4,30 @@ Air pollution can be serious issue in some areas or critical time periods. The g
 
 ## Design
 
-Sensor data are simulated and exposed to the Prometheus server via http endpoints using prometheus-cpp client library. The Prometheus server pulls all the metric data for every sensor periodically. As the number of sensors increase, more Prometheus servers with recording rules can be set up to scrape different targets. A global Prometheus server then can collect the aggregated data from sub-level servers. The data visualization is done through Grafana. 
+Sensor data are simulated and exposed to the Prometheus server via http endpoints using prometheus-cpp client library. The Prometheus server pulls all the metric data for every sensor periodically. As the number of sensors increases, more Prometheus servers with recording rules can be set up to scrape different targets. A global Prometheus server then can collect the aggregated data from sub-level servers. The data visualization is done through Grafana. 
 
 <p align="center">
 <img src="./images/system.png" width="800">
 </p>
+
+### Data flow for one producer and one Prometheus server
+* A producer is set up to generate multiple http servers which simulate the endpoits of sensor devices, and send target (sensor) information to an intermediate server between producer and Prometheus server.
+* An intermediate server (now on the same node as the Prometheus server) is set up to receive target information, and generate a JSON file that contains the information of sensors.
+* Prometheus server takes JSON files, and scrape targets with a specified interval (e.g. 10s)
+* A Grafana server is set up to display data from Prometheus.
+
+### Data format
+1. Metric data exposed to Prometheus
+
+`metric_name{key_1=value_1,key_2=value_2, ...} number`
+2. Scraping targets in JSON file of Prometheus
+
+For example, `{"labels": {"job": "job_name"}, "targets": ["URL:port_number"]}`
+
+3. Recording rules in PromQL
+
+For example, `avg(metric_name) by (key_1)`
+
 
 ## Dependence
 This program requires:
@@ -49,7 +68,7 @@ In the _prometheus_ source directory, run
 ```
 ./generate_prom_targets.py [targets.json] [port number = 8080]
 ```
-For example, `./generate_prom_targets.py targets.json`. Example of target json files can be found under _prometheus_setup/example_json_.
+For example, `./generate_prom_targets.py targets.json`. Example of target JSON files can be found under _prometheus_setup/example_json_.
 
 2. Send target infomation to the intermediate server
 
@@ -60,7 +79,7 @@ Copy `generate_ports.sh` under the _sensor_simulation_ directory to the build di
 ```
 For example, `./generate_ports.sh 2000 20002 A`
 
-3. Modify the `sensor-server.yml` in the _prometheus_ source directoryto match the names of the json files that contain target information.
+3. Modify the `sensor-server.yml` in the _prometheus_ source directoryto match the names of the JSON files that contain target information.
 
 4. Run the Prometheus server
 
@@ -70,5 +89,17 @@ In the _prometheus_ source directory, run
 ./run_prom.sh
 ```
 
+## License
 
+### [Prometheus]("https://github.com/prometheus/prometheus") 
+Apache License 2.0
+
+### [prometheus-cpp]("https://github.com/jupp0r/prometheus-cpp")
+MIT
+
+### protobuf
+[LICENSE]("https://github.com/google/protobuf/blob/master/LICENSE")
+
+### [Grafana]("https://github.com/grafana/grafana")
+Apache License 2.0
 

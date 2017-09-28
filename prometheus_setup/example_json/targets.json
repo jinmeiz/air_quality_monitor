@@ -1,1 +1,1 @@
-[{"labels": {"job": "sensor_17180"}, "targets": ["public dns (or localhost):port number"]}, {"labels": {"job": "sensor_17181"}, "targets": ["public dns (or localhost):port number"]}, {"labels": {"job": "sensor_17181"}, "targets": ["public dns (or localhost):port number"]}]
+[{"labels": {"job": "job_name_1"}, "targets": ["public dns (or localhost):port number 1"]}, {"labels": {"job": "job_name_2"}, "targets": ["public dns (or localhost):port number 2"]}, {"labels": {"job": "job_name_3"}, "targets": ["public dns (or localhost):port number 3"]}]
