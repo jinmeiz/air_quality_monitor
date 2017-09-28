@@ -12,13 +12,6 @@ Usage::
 """
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
-# specify prometheus server public dns
-prom_public_dns = "<prometheus server public dns>"
-# specify prometheus server port number
-prom_port_num = 9090
-# specify file name for storing targets
-input_file = "targets.json"
-
 def append_data_json(file_name, producer_address, port, sensor_id):
     # open file
     with open(file_name) as json_data:
@@ -33,16 +26,15 @@ def append_data_json(file_name, producer_address, port, sensor_id):
 
     json_data.close()
 
-def add_prometheus_json(file_name, prometheus_url, port):
-    # make a new file if not
-    open(file_name, 'w')
-    target_name_prometheus = prometheus_url + ":" + str(port)
-    job_name_prometheus = "prometheus"
-    data = [{"targets": [target_name_prometheus], "labels": {"job": job_name_prometheus}}]
-
+def add_data_json(file_name, producer_address, port, sensor_id):
+  # make a new file if not
+  open(file_name, 'w')
+    target_name = producer_address + ":" + str(port)
+    data = [{"targets": [target_name], "labels": {"job": sensor_id}}]
+    
     with open(file_name, 'w') as json_data:
-        json_data.write(json.dumps(data))
-
+      json_data.write(json.dumps(data))
+    
     json_data.close()
 
 class S(BaseHTTPRequestHandler):
@@ -73,12 +65,12 @@ class S(BaseHTTPRequestHandler):
         print("port_number", port_number)
         #print("sensor_id", sensor_id)
 
-        # write targets into json file
-        if not os.path.exists(input_file):
-            add_prometheus_json(input_file, prom_public_dns, prom_port_num)
-
-        append_data_json(input_file, producer_address, port_number, sensor_id)
-
+       # write targets into json file
+       input_file = argv[1]
+       if not os.path.exists(input_file):
+           add_data_json(input_file, producer_address, port_number, sensor_id)
+      else:
+           append_data_json(input_file, producer_address, port_number, sensor_id)
 
 
 def run(server_class=HTTPServer, handler_class=S, port=8080):
@@ -90,7 +82,7 @@ def run(server_class=HTTPServer, handler_class=S, port=8080):
 if __name__ == "__main__":
     from sys import argv
 
-    if len(argv) == 2:
-        run(port=int(argv[1]))
+    if len(argv) == 3:
+        run(port=int(argv[2]))
     else:
         run()

@@ -1,8 +1,8 @@
-# Air quality monitor in real time
+## Install sensor_simulation
 
 ### Install prerequisites: 
 ``` 
-sudo install_ prerequisites.sh
+sudo install_prerequisites.sh
 ```
 
 ### Install protobuf:
@@ -69,8 +69,16 @@ cd ../../build/prometheus-cpp
 make DESTDIR=../../install/prometheus-cpp/ install 
 ```
 
-### Install sensor_simulation 
+### Build sensor_simulation 
 ```
-# make a build directory for sensor_simulation
+# make a build directory for sensor_simulation, and changes `SOURCE_DIR`, `PROMETHEUS_CPP_DIR`, `PROMETHEUS_CPP_LIB`, `PROTOBUF_DIR`, and `PROTOBUF_LIBRARIES`, then run
 ./config_sensor_simulation.sh
+
+# build 
+make
+
+# run producer (e.g. ./producer "localhost:9090" "localhost" 9091 A9091) 
+./producer [prometheus_server_url] [producer_url] [port_number] [sensor_id]
 ```
+
+

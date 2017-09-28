@@ -1,0 +1,1 @@
+[{"labels": {"job": "prometheus"}, "targets": ["public dns (or localhost):9091"]}]
