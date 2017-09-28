@@ -115,6 +115,6 @@ MIT
 ### protobuf
 [LICENSE]("https://github.com/google/protobuf/blob/master/LICENSE")
 
-### [Grafana]("https://github.com/grafana/grafana")
+### [Grafana](https://github.com/grafana/grafana)
 Apache License 2.0
 
