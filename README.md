@@ -25,6 +25,7 @@ Sensor data are simulated and exposed to the Prometheus server via http endpoint
 1. Metric data exposed to Prometheus
 
 `metric_name{key_1=value_1,key_2=value_2, ...} number`
+
 2. Scraping targets in JSON file of Prometheus
 
 For example, `{"labels": {"job": "job_name"}, "targets": ["URL:port_number"]}`
