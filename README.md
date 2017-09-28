@@ -3,16 +3,18 @@
 
 ## Design
 
+Sensor data are simulated and exposed to the Prometheus server via http endpoints with prometheus-cpp client library. The Prometheus server goes and reads all the metric data for a sensor periodically. As the number of sensors increase, more Prometheus servers with recording rules can be set up to scrape different targets. A global Prometheus server then can pull the aggregated data from sub-level servers. The data visualization is through Grafana. 
+
 <p align="center">
 <img src="./images/system.png" width="800">
 </p>
 
 ## Dependence
 This program requires:
-* [prometheus]("https://prometheus.io") - a monitor system and time series database
+* [Prometheus]("https://prometheus.io") - a monitor system and time series database
 * a C++ comiplier that supports the C++11 standard. This application has been tested with Apple Clang version 8.1.0, and GCC versions 6.3.0.
 * [prometheus-cpp]("https://github.com/jupp0r/prometheus-cpp") - Prometheus client library in C++. The installation instruction is included in the `sensor_simulation` directory.
-* [protobuf]("https://github.com/google/protobuf") - A library required by prometheus-cpp. See the `README` file in `sensor_simulation` directory.
+* [Protocol Buffers]("https://github.com/google/protobuf") - Google's data interchange format required by prometheus-cpp. See the `README` file in `sensor_simulation` directory for compilation and installation.
 
 ## Build
 
@@ -48,7 +50,7 @@ For example, `./generate_prom_targets.py targets.json`. Example of target json f
 
 2. Send target infomation to the intermediate server
 
-Copy generate_ports.sh under the `sensor_simulation` directory to the build directory of sensor_simulation, run
+Copy `generate_ports.sh` under the `sensor_simulation` directory to the build directory of sensor_simulation, run
 
 ```
 ./generate_ports.sh [start of port number] [end of port number] [sensor label]
