@@ -12,14 +12,14 @@ Sensor data are simulated and exposed to the Prometheus server via http endpoint
 
 ### Data flow for one producer and one Prometheus server
 
-<p align="center">
-<img src="./images/data_flow.png" width="800">
-</p>
-
 1. A producer is set up to generate multiple http servers which simulate the endpoits of sensor devices, and send target (sensor) information to an intermediate server between producer and Prometheus server.
 2. An intermediate server (now on the same node as the Prometheus server) is set up to receive target information, and generate a JSON file that contains the information of sensors.
 3. Prometheus server takes JSON files, and scrape targets with a specified interval (e.g. 10s)
 4. A Grafana server is set up to display data from Prometheus.
+
+<p align="center">
+<img src="./images/data_flow.png" width="800">
+</p>
 
 ### Data format
 1. Metric data exposed to Prometheus
