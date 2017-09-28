@@ -11,10 +11,15 @@ Sensor data are simulated and exposed to the Prometheus server via http endpoint
 </p>
 
 ### Data flow for one producer and one Prometheus server
-* A producer is set up to generate multiple http servers which simulate the endpoits of sensor devices, and send target (sensor) information to an intermediate server between producer and Prometheus server.
-* An intermediate server (now on the same node as the Prometheus server) is set up to receive target information, and generate a JSON file that contains the information of sensors.
-* Prometheus server takes JSON files, and scrape targets with a specified interval (e.g. 10s)
-* A Grafana server is set up to display data from Prometheus.
+
+<p align="center">
+<img src="./images/data_flow.png" width="800">
+</p>
+
+1. A producer is set up to generate multiple http servers which simulate the endpoits of sensor devices, and send target (sensor) information to an intermediate server between producer and Prometheus server.
+2. An intermediate server (now on the same node as the Prometheus server) is set up to receive target information, and generate a JSON file that contains the information of sensors.
+3. Prometheus server takes JSON files, and scrape targets with a specified interval (e.g. 10s)
+4. A Grafana server is set up to display data from Prometheus.
 
 ### Data format
 1. Metric data exposed to Prometheus
@@ -61,6 +66,8 @@ mv prometheus-1.7.1.linux-amd64.tar.gz prometheus
 
 ## Run
 
+### Sub-level Prometheus server
+
 1. Set up an intermediate server to receive target information
 
 In the _prometheus_ source directory, run 
@@ -84,6 +91,14 @@ For example, `./generate_ports.sh 2000 20002 A`
 4. Run the Prometheus server
 
 In the _prometheus_ source directory, run
+
+```
+./run_prom.sh
+```
+
+### Global Prometheus server
+
+In _/prometheus/run_prom.sh_, change `config.file` parameter to `prometheus-servers.yml`, and run 
 
 ```
 ./run_prom.sh
