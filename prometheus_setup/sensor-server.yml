@@ -6,6 +6,10 @@ global:
   external_labels:
     monitor: 'sensor-monitor'
 
+# recording rule to aggregate data
+rule_files:
+- "avg_rules.rules"
+
 scrape_configs:
   - job_name:       'sensor-server'
 

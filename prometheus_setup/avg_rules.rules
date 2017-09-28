@@ -1,0 +1,9 @@
+# average each quantity by region and area
+
+avg(CO2_ppm) by (region, area)
+avg(CO_ppm) by (region, area)
+avg(NO2_ppb) by (region, area)
+avg(SO2_ppb) by (region, area)
+avg(pm25_ugm3) by (region, area)
+avg(pm25_ugm3) by (region, area)
+avg(temperature_C) by (region, area)
