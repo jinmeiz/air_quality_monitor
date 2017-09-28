@@ -106,15 +106,15 @@ In _/prometheus/run_prom.sh_, change `config.file` parameter to `prometheus-serv
 
 ## License
 
-### [Prometheus](https://github.com/prometheus/prometheus) 
+#### [Prometheus](https://github.com/prometheus/prometheus) 
 Apache License 2.0
 
-### [prometheus-cpp](https://github.com/jupp0r/prometheus-cpp)
+#### [prometheus-cpp](https://github.com/jupp0r/prometheus-cpp)
 MIT
 
-### protobuf
+#### protobuf
 [LICENSE](https://github.com/google/protobuf/blob/master/LICENSE)
 
-### [Grafana](https://github.com/grafana/grafana)
+#### [Grafana](https://github.com/grafana/grafana)
 Apache License 2.0
 
