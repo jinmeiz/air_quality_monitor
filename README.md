@@ -2,6 +2,10 @@
 
 Air pollution can be serious issue in some areas or critical time periods. The goal of my project is to build a platform to connect air quality sensors, collect data, and monitor the air quality in real time. The techonoly I chose to explore is [Prometheus](https://prometheus.io), which is a monitor system and time series database. 
 
+* [Presentation Slides](https://docs.google.com/presentation/d/1CZ3yTWvKGmZ99p0HzRzDFpIKr_uWzRXe25seC-otXlw/edit?usp=sharing)
+
+* [Live Demo](http://ec2-52-33-228-61.us-west-2.compute.amazonaws.com:3000/dashboard/db/airq_demo_prom1?refresh=1m&orgId=1&from=1506646536925&to=1506646836926)
+
 ## Design
 
 Sensor data are simulated and exposed to the Prometheus server via http endpoints using prometheus-cpp client library. The Prometheus server pulls all the metric data for every sensor periodically. As the number of sensors increases, more Prometheus servers with recording rules can be set up to scrape different targets. A global Prometheus server then can collect the aggregated data from sub-level servers. The data visualization is done through Grafana. 
