@@ -1,6 +1,6 @@
 # AirQ - monitoring air quality in real time.
 
-Air pollution can be serious issue in some areas or critical time periods. The goal of my project is to build a platform to connect air quality sensors, collect data, and monitor the air quality in real time. The techonoly I chose to explore is [Prometheus](https://prometheus.io), which is a monitor system and time series database. 
+Air pollution is a serious issue in some areas in many places around the world, or at critical time periods. The goal of my project is to build a platform to connect simulated air quality sensors, collect sensor data, and monitor the air quality in real time. The technology I chose to explore is [Prometheus](https://prometheus.io), which is a monitor system and time series database.
 
 * [Presentation Slides](https://docs.google.com/presentation/d/1CZ3yTWvKGmZ99p0HzRzDFpIKr_uWzRXe25seC-otXlw/edit?usp=sharing)
 
@@ -8,105 +8,91 @@ Air pollution can be serious issue in some areas or critical time periods. The g
 
 ## Design
 
-Sensor data are simulated and exposed to the Prometheus server via http endpoints using prometheus-cpp client library. The Prometheus server pulls all the metric data for every sensor periodically. As the number of sensors increases, more Prometheus servers with recording rules can be set up to scrape different targets. A global Prometheus server then can collect the aggregated data from sub-level servers. The data visualization is done through Grafana. 
+Sensor applications produce simulated data, and expose those data to the Prometheus server (__collector server__) via http endpoints using prometheus-cpp client library. The Prometheus server periodically pulls all sensor metrics from each sensor. As the number of sensors increases, more Prometheus servers (__collector servers__) may be added, where each server will scrape a subset of the  targets. A global Prometheus server (__aggregation server__) then collects the aggregated data from these collector servers. Data visualization is handled by Grafana.
 
 <p align="center">
 <img src="./images/system.png" width="800">
 </p>
 
-### Data flow for one producer and one Prometheus server
+### Data flow in detail
 
-1. A producer is set up to generate multiple http servers which simulate the endpoits of sensor devices, and send target (sensor) information to an intermediate server between producer and Prometheus server.
-2. An intermediate server (now on the same node as the Prometheus server) is set up to receive target information, and generate a JSON file that contains the information of sensors.
-3. Prometheus server takes JSON files, and scrape targets with a specified interval (e.g. 10s)
-4. A Grafana server is set up to display data from Prometheus.
+1. A producer is setup to generate multiple http servers which simulate the endpoints of sensor devices, and send target (sensor) information to a register server between the producer and collector server.
+2. The register server (now on the same node as the collector server) is set up to receive target information, and generate a JSON file that contains the information of sensors.
+3. The collector server takes JSON files, and scrape targets with a specified interval (e.g. 10s).
+4. A Grafana server is set up to display data from collector/aggregation server(s).
 
-<p align="center">
-<img src="./images/data_flow.png" width="800">
-</p>
 
 ### Data format
-1. Metric data exposed to Prometheus
+1. Metric data exposed to a collector server
 
-`metric_name{key_1=value_1,key_2=value_2, ...} number`
+   `metric_name{key_1=value_1,key_2=value_2, ...} number`
 
-2. Scraping targets in JSON file of Prometheus
+2. Scraping targets in JSON file of a collector server
 
-For example, `{"labels": {"job": "job_name"}, "targets": ["URL:port_number"]}`
+   For example, `{"labels": {"job": "job_name"}, "targets": ["URL:port_number"]}`
 
 3. Recording rules in PromQL
 
-For example, `avg(metric_name) by (key_1)`
+   For example, `avg(metric_name) by (key_1)`
 
 
 ## Dependence
 This program requires:
-* [Prometheus](https://prometheus.io) - a monitor system and time series database
-* A C++ comiplier that supports the C++11 standard. This application has been tested with Apple Clang version 8.1.0, and GCC versions 6.3.0.
-* [prometheus-cpp](https://github.com/jupp0r/prometheus-cpp) - Prometheus client library in C++. The installation instruction is included in the `README` file under the _sensor_simulation_ directory.
-* [Protocol Buffers](https://github.com/google/protobuf) - Google's data interchange format. It is needed to compile prometheus-cpp. See the `README` file in _sensor_simulation_ directory for compilation and installation.
+* [Prometheus](https://prometheus.io) - a monitor system and time series database.
+* A C++ compiler that supports the C++11 standard. This application has been tested with Apple Clang version 8.1.0, and GCC versions 6.3.0.
+* [prometheus-cpp](https://github.com/jupp0r/prometheus-cpp) - Prometheus client library in C++. The installation instruction is included in the `README` file under the _airq_sensor_ directory.
+* [Protocol Buffers](https://github.com/google/protobuf) - Google's data interchange format. It is needed to compile prometheus-cpp. See the `README` file in _airq_sensor_ directory for compilation and installation.
 * [Grafana](https://grafana.com) - a platform for analytics and monitoring.
 
 ## Build
 
-### Set up Prometheus server 
+### Collector server 
 
-1. Download Prometheus
-
-```
-wget https://github.com/prometheus/prometheus/releases/download/v1.7.1/prometheus-1.7.1.linux-amd64.tar.gz
-tar xvfz prometheus-1.7.1.linux-amd64.tar.gz
-# rename prometheus source directory
-mv prometheus-1.7.1.linux-amd64.tar.gz prometheus
-```
-
-2. Copy everything in the _prometheus_setup_ direcoty into the _prometheus_ source directory
+See the instructions in the `README` file under the _servers_ directory.
 
 
-### Set up sensor data simulation
+### Sensor simulation (producer)
 
-1. Follow instructions in the `README` file under the _sensor_simulation_ directory to install prerequisites which include gcc-6, protobuf, prometheus-cpp, et al.
+1. Follow instructions in the `README` file under the _airq_sensor_ directory to install prerequisites which include gcc-6, protobuf, prometheus-cpp, et al.
 
-2. Build sensor_simulation following the __Build sensor_simulation__ section in in the `README` file in the _sensor_simulation_ directory.
+2. Build airq_sensor following the __Build airq_sensor__ section in in the `README` file in the _airq_sensor_ directory.
 
 ## Run
 
-### Sub-level Prometheus server
+1. Set up a __register server__ to receive target information
 
-1. Set up an intermediate server to receive target information
+   In the _prometheus_ source directory, run 
 
-In the _prometheus_ source directory, run 
+  ```
+  ./sensor_registry_server.py [targets.json] [port number = 8080]
+  ```
+  * For example, `./sensor_registry_servers.py targets.json`. Example of target JSON files can be found under _servers/example_json_.
 
-```
-./generate_prom_targets.py [targets.json] [port number = 8080]
-```
-For example, `./generate_prom_targets.py targets.json`. Example of target JSON files can be found under _prometheus_setup/example_json_.
+2. Send target infomation to the __register server__
 
-2. Send target infomation to the intermediate server
-
-Copy `generate_ports.sh` under the _sensor_simulation_ directory to the build directory of sensor_simulation, run
+   Copy `spawn_sensors.sh` under the _airq_sensor_ directory to the build directory of airq_sensor, run
 
 ```
-./generate_ports.sh [start of port number] [end of port number] [sensor label]
+./spawn_sensors.sh [start of port number] [end of port number] [sensor label]
 ```
-For example, `./generate_ports.sh 2000 20002 A`
+   * For example, `./spawn_sensors.sh 2000 20002 A`
 
 3. Modify the `sensor-server.yml` in the _prometheus_ source directoryto match the names of the JSON files that contain target information.
 
-4. Run the Prometheus server
+4. Start a __collector server(s)__
 
-In the _prometheus_ source directory, run
-
-```
-./run_prom.sh
-```
-
-### Global Prometheus server
-
-In _/prometheus/run_prom.sh_, change `config.file` parameter to `prometheus-servers.yml`, and run 
+   In the _prometheus_ source directory, run
 
 ```
-./run_prom.sh
+./run_servers.sh
+```
+
+5. Start a __aggregation server__
+
+   In _/prometheus/run_servers.sh_, change `config.file` parameter to `prometheus-servers.yml`, and run 
+
+```
+./run_servers.sh
 ```
 
 ## License

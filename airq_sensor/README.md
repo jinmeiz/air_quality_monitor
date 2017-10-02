@@ -69,7 +69,7 @@ cd ../../build/prometheus-cpp
 make DESTDIR=../../install/prometheus-cpp/ install 
 ```
 
-### Build sensor_simulation 
+### Build airq_sensor
 ```
 # make a build directory for sensor_simulation, and changes `SOURCE_DIR`, `PROMETHEUS_CPP_DIR`, `PROMETHEUS_CPP_LIB`, `PROTOBUF_DIR`, and `PROTOBUF_LIBRARIES`, then run
 ./config_sensor_simulation.sh
