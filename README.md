@@ -6,6 +6,8 @@ Air pollution is a serious issue in some areas in many places around the world, 
 
 * [Live Demo](http://ec2-52-33-228-61.us-west-2.compute.amazonaws.com:3000/dashboard/db/airq_demo_prom1?refresh=1m&orgId=1&from=1506646536925&to=1506646836926)
 
+* [Record](https://youtu.be/8xptR4viCOs)
+
 <p align="center">
 <img src="./images/airq_demo.png" width="800">
 </p>
