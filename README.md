@@ -6,6 +6,11 @@ Air pollution is a serious issue in some areas in many places around the world, 
 
 * [Live Demo](http://ec2-52-33-228-61.us-west-2.compute.amazonaws.com:3000/dashboard/db/airq_demo_prom1?refresh=1m&orgId=1&from=1506646536925&to=1506646836926)
 
+<p align="center">
+<img src="./images/airq_demo.png" width="800">
+</p>
+
+
 ## Design
 
 Sensor applications produce simulated data, and expose those data to a __collector server__ (sub-level Prometheus server) via http endpoints using prometheus-cpp client library. The collector server periodically pulls all sensor metrics from each sensor. As the number of sensors increases, more collector servers (Prometheus servers) may be added, where each server will scrape a subset of the  targets. An __aggregation server__ (global Prometheus server) then collects the aggregated data from these collector servers. Data visualization is handled by Grafana.
