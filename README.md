@@ -8,7 +8,7 @@ Air pollution is a serious issue in some areas in many places around the world, 
 
 ## Design
 
-Sensor applications produce simulated data, and expose those data to the Prometheus server (__collector server__) via http endpoints using prometheus-cpp client library. The Prometheus server periodically pulls all sensor metrics from each sensor. As the number of sensors increases, more Prometheus servers (__collector servers__) may be added, where each server will scrape a subset of the  targets. A global Prometheus server (__aggregation server__) then collects the aggregated data from these collector servers. Data visualization is handled by Grafana.
+Sensor applications produce simulated data, and expose those data to a __collector server__ (sub-level Prometheus server) via http endpoints using prometheus-cpp client library. The collector server periodically pulls all sensor metrics from each sensor. As the number of sensors increases, more collector servers (Prometheus servers) may be added, where each server will scrape a subset of the  targets. An __aggregation server__ (global Prometheus server) then collects the aggregated data from these collector servers. Data visualization is handled by Grafana.
 
 <p align="center">
 <img src="./images/system.png" width="800">
@@ -18,7 +18,7 @@ Sensor applications produce simulated data, and expose those data to the Prometh
 
 1. A producer is setup to generate multiple http servers which simulate the endpoints of sensor devices, and send target (sensor) information to a register server between the producer and collector server.
 2. The register server (now on the same node as the collector server) is set up to receive target information, and generate a JSON file that contains the information of sensors.
-3. The collector server takes JSON files, and scrape targets with a specified interval (e.g. 10s).
+3. Collector server(s) takes JSON files, and scrape targets with a specified interval (e.g. 10s).
 4. A Grafana server is set up to display data from collector/aggregation server(s).
 
 
@@ -39,23 +39,24 @@ Sensor applications produce simulated data, and expose those data to the Prometh
 ## Dependence
 This program requires:
 * [Prometheus](https://prometheus.io) - a monitor system and time series database.
-* A C++ compiler that supports the C++11 standard. This application has been tested with Apple Clang version 8.1.0, and GCC versions 6.3.0.
+* A C++ compiler that supports the C++11 standard. This application has been tested with Apple Clang version 8.1.0 and GCC versions 6.3.0.
 * [prometheus-cpp](https://github.com/jupp0r/prometheus-cpp) - Prometheus client library in C++. The installation instruction is included in the `README` file under the _airq_sensor_ directory.
 * [Protocol Buffers](https://github.com/google/protobuf) - Google's data interchange format. It is needed to compile prometheus-cpp. See the `README` file in _airq_sensor_ directory for compilation and installation.
 * [Grafana](https://grafana.com) - a platform for analytics and monitoring.
+* libcurl4-openssl-dev - a client-side URL transfer library.
 
 ## Build
 
 ### Collector server 
 
-See the instructions in the `README` file under the _servers_ directory.
+See instructions in the `README` file under the _servers_ directory.
 
 
-### Sensor simulation (producer)
+### Producer (sensor simulation)
 
 1. Follow instructions in the `README` file under the _airq_sensor_ directory to install prerequisites which include gcc-6, protobuf, prometheus-cpp, et al.
 
-2. Build airq_sensor following the __Build airq_sensor__ section in in the `README` file in the _airq_sensor_ directory.
+2. Build __producer__ following the `Build airq_sensor` section in the `README` file in the _airq_sensor_ directory.
 
 ## Run
 
@@ -77,7 +78,7 @@ See the instructions in the `README` file under the _servers_ directory.
 ```
    * For example, `./spawn_sensors.sh 2000 20002 A`
 
-3. Modify the `sensor-server.yml` in the _prometheus_ source directoryto match the names of the JSON files that contain target information.
+3. Modify the `sensor-server.yml` in the _prometheus_ source directory to match the names of the JSON files that contain target information.
 
 4. Start a __collector server(s)__
 
@@ -87,7 +88,7 @@ See the instructions in the `README` file under the _servers_ directory.
 ./run_servers.sh
 ```
 
-5. Start a __aggregation server__
+5. Start an __aggregation server__
 
    In _/prometheus/run_servers.sh_, change `config.file` parameter to `prometheus-servers.yml`, and run 
 
