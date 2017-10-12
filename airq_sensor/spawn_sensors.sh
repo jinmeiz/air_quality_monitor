@@ -6,7 +6,7 @@
 
 # instructions:
 # move this script to the build directory of sensor_simulation
-# run: ./generate_ports.sh [PORT_NUM_START] [PORT_NUM_END] [SENSOR_PREFIX]
+# run: ./spawn_sensors.sh [PORT_NUM_START] [PORT_NUM_END] [SENSOR_PREFIX]
 # terminate all jobs: killall producer
 
 # Prometheus server url or public dns on aws
