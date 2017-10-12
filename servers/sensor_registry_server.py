@@ -8,7 +8,7 @@ import os
 Very simple HTTP server in python.
 Usage::
     specify prom_public_dns and prom_port_num
-    ./prometheus_targets.py [target_json.json] [port number for this server]
+    ./sensor_registry_server.py [target_json.json] [port number for this server]
 """
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
